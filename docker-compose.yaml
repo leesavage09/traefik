@@ -19,6 +19,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs:/certs:ro
       - ./dynamic:/dynamic:ro
+      - ./htpasswd:/htpasswd:ro
 
     command:
       # EntryPoints
@@ -58,7 +59,7 @@ services:
       - "traefik.http.routers.dashboard.tls=true"
 
       # Basic‑auth middleware
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=${BASIC_AUTH}"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.usersFile=/htpasswd"
       - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
 
 # Whoami application

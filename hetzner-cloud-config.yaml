@@ -3,7 +3,7 @@
 # 1. Create admin user
 users:
   - name: dev
-    groups: users, admin, sudo
+    groups: users, admin, sudo, docker
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:

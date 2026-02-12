@@ -1,0 +1,56 @@
+#cloud-config
+
+# 1. Create admin user
+users:
+  - name: dev
+    groups: users, admin, sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGnZSB+v4dYfs9+cCQmP1XZsf65k06zM8nU+YyVwTiHJ leesavage09@gmail.com
+
+# 2. Install packages
+packages:
+  - fail2ban
+  - ufw
+  - docker.io
+  - docker-compose
+  - git
+package_update: true
+package_upgrade: true
+
+# 3. Harden SSH
+write_files:
+  - path: /etc/ssh/sshd_config.d/ssh-hardening.conf
+    content: |
+      PermitRootLogin no
+      PasswordAuthentication no
+      Port 2222
+      KbdInteractiveAuthentication no
+      ChallengeResponseAuthentication no
+      MaxAuthTries 2
+      AllowTcpForwarding no
+      X11Forwarding no
+      AllowAgentForwarding no
+      AuthorizedKeysFile .ssh/authorized_keys
+      AllowUsers dev
+
+# 4. Run commands
+runcmd:
+  # 4a. Enable fail2ban
+  - printf "[sshd]\nenabled = true\nport = ssh, 2222\nbanaction = iptables-multiport" > /etc/fail2ban/jail.local
+  - systemctl enable fail2ban
+
+  # 4b. Configure firewall
+  - ufw allow 2222
+  - ufw allow 80
+  - ufw allow 443
+  - ufw allow 8080
+  - ufw --force enable
+
+  # 4c. Enable Docker
+  - systemctl enable docker
+  - systemctl start docker
+
+  # 4h. Reboot to apply SSH changes
+  - reboot

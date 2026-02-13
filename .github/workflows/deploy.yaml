@@ -12,6 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: List files
+        run: ls -la
+
       - name: Prepare remote directory
         uses: appleboy/ssh-action@v0.1.6
         with:

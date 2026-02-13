@@ -52,5 +52,8 @@ runcmd:
   - systemctl enable docker
   - systemctl start docker
 
-  # 4d. Reboot to apply SSH/firewall changes
+  # 4c. Enable Docker Network
+  - docker network create traefik-network
+
+  # 4e. Reboot to apply SSH/firewall changes
   - reboot

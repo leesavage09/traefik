@@ -7,7 +7,7 @@ services:
       - no-new-privileges:true
 
     networks:
-      - proxy
+      - traefik-network
 
     ports:
       - "80:80"
@@ -72,7 +72,7 @@ services:
     container_name: whoami
     restart: unless-stopped
     networks:
-      - proxy
+      - traefik-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${WHOAMI_HOST}`)"
@@ -81,5 +81,5 @@ services:
       - "traefik.http.routers.whoami.tls.certresolver=le"
 
 networks:
-  proxy:
-    name: proxy
+  traefik-network:
+    external: true

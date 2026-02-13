@@ -48,7 +48,7 @@ services:
 
       # Let's Encrypt (ACME)
       - "--certificatesresolvers.le.acme.tlschallenge=true"
-      - "--certificatesresolvers.le.acme.email=${EMAIL}"
+      - "--certificatesresolvers.le.acme.email=leesavage09@gmail.com"
       - "--certificatesresolvers.le.acme.storage=/certs/acme.json"
 
     labels:
@@ -56,7 +56,7 @@ services:
       - "traefik.enable=true"
 
       # Dashboard router
-      - "traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_HOST}`)"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.exp.leesavage.co.uk`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.tls=true"
